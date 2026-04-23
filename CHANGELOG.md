@@ -6,6 +6,15 @@ Format: **MAJOR** = Frappe version bump · **MINOR** = app version bump · **PAT
 
 ---
 
+## [1.0.4] - 2026-04-23
+
+### Fixed
+- Vite build failed because `common_site_config.json` was empty (`{}`), causing Rollup
+  to reject the `socketio_port` named import in `src/socket.js`. Now temporarily writes
+  `{"socketio_port":9000}` before `yarn build` and restores `{}` afterwards.
+
+---
+
 ## [1.0.3] - 2026-04-23
 
 ### Fixed

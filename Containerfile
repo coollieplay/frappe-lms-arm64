@@ -37,9 +37,11 @@ RUN cd /home/frappe/frappe-bench && \
   else \
     echo "WARNING: Lesson.vue not found at $LESSON_VUE"; \
   fi && \
+  echo '{"socketio_port":9000}' > sites/common_site_config.json && \
   cd apps/lms/frontend && \
   yarn build && \
   cd /home/frappe/frappe-bench && \
+  echo "{}" > sites/common_site_config.json && \
   cp -r apps/lms/lms/public/frontend/. sites/assets/lms/frontend/
 
 # Sync _lms.html with the actual built frontend hash.
