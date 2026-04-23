@@ -24,6 +24,21 @@ RUN --mount=type=secret,id=apps_json,target=/opt/frappe/apps.json,uid=1000,gid=1
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
+# Patch LMS frontend source: rename "Questions" → "Discussions" in the lesson panel.
+# bench build --app lms re-runs the full yarn/vite compilation, so patching before it
+# is sufficient — no separate yarn build step needed.
+RUN cd /home/frappe/frappe-bench && \
+  LESSON_VUE="apps/lms/frontend/src/pages/Lesson.vue" && \
+  if [ -f "$LESSON_VUE" ]; then \
+    sed -i "s|:title=\"'Questions'\"|:title=\"'Discussions'\"|g" "$LESSON_VUE" && \
+    sed -i "s|__('Ask a question to get help from the community\.')|__('Start a discussion to get help from the community.')|g" "$LESSON_VUE" && \
+    sed -i "s|MessageCircleQuestion|MessageCircle|g" "$LESSON_VUE" && \
+    echo "Patched Lesson.vue: Questions → Discussions"; \
+  else \
+    echo "WARNING: Lesson.vue not found at $LESSON_VUE"; \
+  fi && \
+  bench build --app lms --production 2>&1 | tail -5
+
 # Sync _lms.html with the actual built frontend hash.
 # bench init runs bench build which compiles the Vue frontend to sites/assets/lms/,
 # generating a new content-hashed index.html. The www template must match or the
