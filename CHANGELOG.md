@@ -6,6 +6,15 @@ Format: **MAJOR** = Frappe version bump · **MINOR** = app version bump · **PAT
 
 ---
 
+## [1.0.2] - 2026-04-23
+
+### Changed
+- Renamed "Questions" to "Discussions" in the course lesson panel (`Lesson.vue`).
+  Updated tab title, empty-state text, and icon (`MessageCircleQuestion` →
+  `MessageCircle`) to be consistent with the Discussions label used in Batch pages.
+
+---
+
 ## [1.0.1] - 2026-04-23
 
 ### Fixed
