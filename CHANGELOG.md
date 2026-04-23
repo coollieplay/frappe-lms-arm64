@@ -6,6 +6,15 @@ Format: **MAJOR** = Frappe version bump · **MINOR** = app version bump · **PAT
 
 ---
 
+## [1.0.5] - 2026-04-23
+
+### Fixed
+- Removed `cp -r apps/lms/lms/public/frontend/. sites/assets/lms/frontend/` — bench init
+  symlinks (or co-locates) the two paths, so `cp` failed with "same file". `yarn build`
+  already writes the compiled output to the correct location.
+
+---
+
 ## [1.0.4] - 2026-04-23
 
 ### Fixed

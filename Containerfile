@@ -41,8 +41,7 @@ RUN cd /home/frappe/frappe-bench && \
   cd apps/lms/frontend && \
   yarn build && \
   cd /home/frappe/frappe-bench && \
-  echo "{}" > sites/common_site_config.json && \
-  cp -r apps/lms/lms/public/frontend/. sites/assets/lms/frontend/
+  echo "{}" > sites/common_site_config.json
 
 # Sync _lms.html with the actual built frontend hash.
 # bench init runs bench build which compiles the Vue frontend to sites/assets/lms/,
