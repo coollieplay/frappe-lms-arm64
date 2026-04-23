@@ -6,5 +6,9 @@
   {
     "url": "https://github.com/frappe/lms",
     "branch": "main"
+  },
+  {
+    "url": "https://github.com/frappe/print_designer",
+    "branch": "main"
   }
 ]
