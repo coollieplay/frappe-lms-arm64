@@ -6,6 +6,16 @@ Format: **MAJOR** = Frappe version bump · **MINOR** = app version bump · **PAT
 
 ---
 
+## [1.0.3] - 2026-04-23
+
+### Fixed
+- `bench build --app lms` calls `yarn run production` which LMS does not have (it uses
+  Vite directly). Replaced with `yarn build` in `apps/lms/frontend/` followed by an
+  explicit `cp` to `sites/assets/lms/frontend/`. The Discussions rename is now correctly
+  compiled into the image-baked JS bundle.
+
+---
+
 ## [1.0.2] - 2026-04-23
 
 ### Changed

@@ -24,9 +24,9 @@ RUN --mount=type=secret,id=apps_json,target=/opt/frappe/apps.json,uid=1000,gid=1
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
-# Patch LMS frontend source: rename "Questions" → "Discussions" in the lesson panel.
-# bench build --app lms re-runs the full yarn/vite compilation, so patching before it
-# is sufficient — no separate yarn build step needed.
+# Patch LMS frontend source: rename "Questions" → "Discussions" in the lesson panel,
+# then recompile the Vue frontend with yarn (bench build calls `yarn run production`
+# which LMS does not support — the app uses Vite directly via `yarn build`).
 RUN cd /home/frappe/frappe-bench && \
   LESSON_VUE="apps/lms/frontend/src/pages/Lesson.vue" && \
   if [ -f "$LESSON_VUE" ]; then \
@@ -37,7 +37,10 @@ RUN cd /home/frappe/frappe-bench && \
   else \
     echo "WARNING: Lesson.vue not found at $LESSON_VUE"; \
   fi && \
-  bench build --app lms --production 2>&1 | tail -5
+  cd apps/lms/frontend && \
+  yarn build && \
+  cd /home/frappe/frappe-bench && \
+  cp -r apps/lms/lms/public/frontend/. sites/assets/lms/frontend/
 
 # Sync _lms.html with the actual built frontend hash.
 # bench init runs bench build which compiles the Vue frontend to sites/assets/lms/,
